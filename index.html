@@ -117,8 +117,6 @@
       document.getElementById("hours").textContent = pad(totalHours);
       document.getElementById("minutes").textContent = pad(totalMinutes);
       document.getElementById("seconds").textContent = totalSeconds.toLocaleString();
-      document.getElementById("total-hours").textContent = `${totalHours.toLocaleString()} TOTAL HOURS`;
-      document.getElementById("total-minutes").textContent = `${totalMinutes.toLocaleString()} TOTAL MINUTES`;
 
       if (remaining === 0) {
         document.querySelectorAll(".number").forEach(element => element.textContent = "00");
