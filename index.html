@@ -65,6 +65,17 @@
     .number { font-size: clamp(44px, 7vw, 82px); font-weight: 800; line-height: 1; }
     .label { margin-top: 18px; color: var(--blue); font-size: clamp(14px, 2vw, 23px); font-weight: 800; }
     .target-date { margin-top: 42px; color: #e5e7eb; font-size: clamp(16px, 2.2vw, 30px); }
+    .totals {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 18px;
+      color: #d9f99d;
+      font-size: clamp(14px, 1.8vw, 22px);
+      font-weight: 700;
+    }
+    #seconds { font-size: clamp(28px, 4.2vw, 48px); }
     @media (max-width: 760px) {
       .countdown-card { min-height: auto; padding: 40px 18px; }
       .units { grid-template-columns: repeat(2, minmax(120px, 180px)); gap: 12px; }
@@ -82,7 +93,7 @@
       <div class="unit"><div class="number" id="minutes">00</div><div class="label">MINUTES</div></div>
       <div class="unit"><div class="number" id="seconds">00</div><div class="label">SECONDS</div></div>
     </div>
-    <div class="target-date">Saturday • November 28, 2026 • 12:00 PM</div>
+    <div class="target-date">Saturday • November 28, 2026 • 12:00 PM (WAT)</div>
   </main>
 
   <script>
@@ -95,15 +106,19 @@
     function updateCountdown() {
       const remaining = Math.max(target - Date.now(), 0);
       const totalSeconds = Math.floor(remaining / 1000);
-      const days = Math.floor(totalSeconds / 86400);
+      const days = Math.ceil(totalSeconds / 86400);
       const hours = Math.floor((totalSeconds % 86400) / 3600);
       const minutes = Math.floor((totalSeconds % 3600) / 60);
       const seconds = totalSeconds % 60;
+      const totalHours = Math.floor(totalSeconds / 3600);
+      const totalMinutes = Math.floor(totalSeconds / 60);
 
       document.getElementById("days").textContent = pad(days);
-      document.getElementById("hours").textContent = pad(hours);
-      document.getElementById("minutes").textContent = pad(minutes);
-      document.getElementById("seconds").textContent = pad(seconds);
+      document.getElementById("hours").textContent = pad(totalHours);
+      document.getElementById("minutes").textContent = pad(totalMinutes);
+      document.getElementById("seconds").textContent = totalSeconds.toLocaleString();
+      document.getElementById("total-hours").textContent = `${totalHours.toLocaleString()} TOTAL HOURS`;
+      document.getElementById("total-minutes").textContent = `${totalMinutes.toLocaleString()} TOTAL MINUTES`;
 
       if (remaining === 0) {
         document.querySelectorAll(".number").forEach(element => element.textContent = "00");
